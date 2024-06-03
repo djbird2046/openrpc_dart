@@ -10,8 +10,19 @@ An OpenRPC JSON Spec Parser for dart, from: https://spec.open-rpc.org/
 
 According to `/example/openrpc_dart_example.dart`
 
+- From JSON String
 ```dart
-String jsonPath = "$currentWorkingDirectory/example/json/$jsonFileName";
-OpenRPCLoader openRPCLoader = OpenRPCLoader();
-OpenRPC openRPC = await openRPCLoader.load(jsonPath);
+Future<void> main() async {
+  String jsonString = "{...OpenRPC String...}";
+  OpenRPCLoader openRPCLoader = OpenRPCLoader();
+  OpenRPC openRPC = await openRPCLoader.load(jsonString);
+}
+```
+- From JSON File
+```dart
+Future<void> main() async {
+  String jsonPath = "$currentWorkingDirectory/example/json/$jsonFileName";
+  OpenRPCLoader openRPCLoader = OpenRPCLoader();
+  OpenRPC openRPC = await openRPCLoader.loadFromFile(jsonPath);
+}
 ```

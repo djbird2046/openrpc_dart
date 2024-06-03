@@ -17,7 +17,7 @@ void main() async {
     print("FILE_NAME: $jsonFileName");
     String jsonPath = "$currentWorkingDirectory/example/json/$jsonFileName";
     OpenRPCLoader openRPCLoader = OpenRPCLoader();
-    OpenRPC openRPC = await openRPCLoader.load(jsonPath);
+    OpenRPC openRPC = await openRPCLoader.loadFromFile(jsonPath);
     print("title: ${openRPC.info.title}");
   });
 }
