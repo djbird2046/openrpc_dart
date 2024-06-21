@@ -1,83 +1,76 @@
-import 'reference.dart';
+import 'example.dart';
+import 'external_documentation.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'schema.g.dart';
+
+@JsonSerializable()
 
 class Schema {
-  Map<String, dynamic> schema;
+  String type;
+  String? title;
+  String? description;
+  Map<String, Schema>? properties;
+  Schema? items;
+  @JsonKey(name: "enum")
+  List<String>? enum_;
+  List<String>? required;
 
-  Schema({required this.schema});
+  @JsonKey(name: "default")
+  String? default_;
 
-  factory Schema.fromJson(Map<String, dynamic> json) {
-    return Schema(schema: json);
-  }
+  num? minimum;
+  num? maximum;
+  num? minLength;
+  num? maxLength;
+  String? pattern;
 
-  Map<String, dynamic> toJson() => schema;
+  Example? example;
+  Map<String, Example>? examples;
+  bool? readOnly;
+  bool? writeOnly;
+  bool? nullable;
 
-  static Schema _fromRef(String ref) {
-    List<String> parts = ref.split("/");
-    if(parts[0]=="#"&&parts[1]=="components"&&parts[2]=="schemas") {
-      String refName = parts[3];
-      Schema? schema = SchemasSingleton.getInstance()[refName];
-      if(schema != null) {
-        return schema;
-      } else {
-        throw FormatException("\$ref not found: $ref");
-      }
-    } else {
-      throw FormatException("\$ref format exception: $ref");
-    }
-  }
-}
+  ExternalDocumentation? externalDocs;
 
-class SchemaRef {
-  Schema? schema;
-  Reference? ref;
+  Schema({required this.type, this.title, this.description, this.properties, this.items, this.required,
+    this.default_, this.minimum, this.maximum, this.minLength, this.maxLength, this.pattern,
+    this.example, this.examples, this.readOnly, this.writeOnly, this.nullable,
+    this.externalDocs});
 
-  factory SchemaRef.fromJson(Map<String, dynamic> json){
-    Schema schema;
-    Reference? ref;
-    String? $ref = json["\$ref"];
-    if($ref != null) {
-      ref = Reference.fromJson(json);
-      schema = Schema._fromRef($ref);
-    } else {
-      schema = Schema.fromJson(json);
-    }
+  factory Schema.fromJson(Map<String, dynamic> json) => _$SchemaFromJson(json);
 
-    return SchemaRef(
-        schema,
-        ref
-    );
-  }
-
-  SchemaRef(this.schema, this.ref) {
-    if(schema == null && ref == null) {
-      throw FormatException("One of parameter schema and ref must be Non-null");
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    if(ref != null) {
-      Map<String, dynamic> refJson = ref!.toJson();
-      return refJson;
-    } else {
-      Map<String, dynamic> schemaJson = schema!.toJson();
-      return schemaJson;
-    }
-  }
+  Map<String, dynamic> toJson() => _$SchemaToJson(this);
 
 }
-
 
 class SchemasSingleton {
   static Map<String, Schema>? _schemas;
+  static var cache = <String, dynamic>{};
 
   static initInstance(Map<String, dynamic> schemasJson) {
     Map<String, Schema> schemas = {};
+    Map<String, String> refMap = {};
     schemasJson.forEach((key, value) {
-      schemas[key] = Schema.fromJson(value);
+      if(value["\$ref"] != null) {
+        refMap[key] = value as String;
+      } else {
+        schemas[key] = Schema.fromJson(value);
+      }
     });
+
+    refMap.forEach((key, value) {
+      List<String> parts = value.split("/");
+      if(parts[0]=="#"&&parts[1]=="components"&&parts[2]=="schemas") {
+        String refName = parts[3];
+        if(schemas[refName] != null) {
+          schemas[key] = schemas[refName]!;
+        }
+      }
+    });
+
     _schemas = schemas;
   }
 
   static Map<String, Schema> getInstance() => _schemas!;
 }
-

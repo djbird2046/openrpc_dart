@@ -2,8 +2,6 @@ import 'components.dart';
 import 'example.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'reference.dart';
-
 part 'example_pairing.g.dart';
 
 @JsonSerializable()
@@ -39,43 +37,4 @@ class ExamplePairing {
       throw FormatException("#ref format exception: $ref");
     }
   }
-}
-
-class ExamplePairingRef {
-  ExamplePairing? examplePairing;
-  Reference? ref;
-
-  factory ExamplePairingRef.fromJson(Map<String, dynamic> json){
-    ExamplePairing examplePairing;
-    Reference? ref;
-    String? $ref = json["\$ref"];
-    if($ref != null) {
-      ref = Reference.fromJson(json);
-      examplePairing = ExamplePairing._fromRef($ref);
-    } else {
-      examplePairing = ExamplePairing.fromJson(json);
-    }
-
-    return ExamplePairingRef(
-        examplePairing,
-        ref
-    );
-  }
-
-  ExamplePairingRef(this.examplePairing, this.ref) {
-    if(examplePairing == null && ref == null) {
-      throw FormatException("One of parameter examplePairing and ref must be Non-null");
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    if(ref != null) {
-      Map<String, dynamic> refJson = ref!.toJson();
-      return refJson;
-    } else {
-      Map<String, dynamic> examplePairingJson = examplePairing!.toJson();
-      return examplePairingJson;
-    }
-  }
-
 }

@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'components.dart';
-import 'reference.dart';
 
 part 'example.g.dart';
 
@@ -38,43 +37,4 @@ class Example {
       throw FormatException("#ref format exception: $ref");
     }
   }
-}
-
-class ExampleRef {
-  Example? example;
-  Reference? ref;
-
-  factory ExampleRef.fromJson(Map<String, dynamic> json){
-    Example example;
-    Reference? ref;
-    String? $ref = json["\$ref"];
-    if($ref != null) {
-      ref = Reference.fromJson(json);
-      example = Example._fromRef($ref);
-    } else {
-      example = Example.fromJson(json);
-    }
-
-    return ExampleRef(
-        example,
-        ref
-    );
-  }
-
-  ExampleRef(this.example, this.ref) {
-    if(example == null && ref == null) {
-      throw FormatException("One of parameter example and ref must be Non-null");
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    if(ref != null) {
-      Map<String, dynamic> refJson = ref!.toJson();
-      return refJson;
-    } else {
-      Map<String, dynamic> exampleJson = example!.toJson();
-      return exampleJson;
-    }
-  }
-
 }

@@ -2,8 +2,6 @@ import 'components.dart';
 import 'external_documentation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'reference.dart';
-
 part 'tag.g.dart';
 
 @JsonSerializable()
@@ -38,43 +36,4 @@ class Tag {
       throw FormatException("\$ref format exception: $ref");
     }
   }
-}
-
-class TagRef {
-  Tag? tag;
-  Reference? ref;
-
-  factory TagRef.fromJson(Map<String, dynamic> json){
-    Tag tag;
-    Reference? ref;
-    String? $ref = json["\$ref"];
-    if($ref != null) {
-      ref = Reference.fromJson(json);
-      tag = Tag._fromRef($ref);
-    } else {
-      tag = Tag.fromJson(json);
-    }
-
-    return TagRef(
-        tag,
-        ref
-    );
-  }
-
-  TagRef(this.tag, this.ref) {
-    if(tag == null && ref == null) {
-      throw FormatException("One of parameter contentDescriptor and ref must be Non-null");
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    if(ref != null) {
-      Map<String, dynamic> refJson = ref!.toJson();
-      return refJson;
-    } else {
-      Map<String, dynamic> tagJson = tag!.toJson();
-      return tagJson;
-    }
-  }
-
 }

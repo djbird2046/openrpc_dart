@@ -12,7 +12,7 @@ ContentDescriptor _$ContentDescriptorFromJson(Map<String, dynamic> json) =>
       summary: json['summary'] as String?,
       description: json['description'] as String?,
       required: json['required'] as bool? ?? false,
-      schema: SchemaRef.fromJson(json['schema'] as Map<String, dynamic>),
+      schema: Schema.fromJson(json['schema'] as Map<String, dynamic>),
       deprecated: json['deprecated'] as bool? ?? false,
     );
 

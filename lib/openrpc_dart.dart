@@ -16,6 +16,8 @@ export 'src/model/license.dart';
 export 'src/model/link.dart';
 export 'src/model/method.dart';
 export 'src/model/open_rpc.dart';
+export 'src/model/reference.dart';
+export 'src/model/schema.dart';
 export 'src/model/server.dart';
 export 'src/model/server_variable.dart';
 export 'src/model/tag.dart';

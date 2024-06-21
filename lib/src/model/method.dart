@@ -11,16 +11,16 @@ part 'method.g.dart';
 @JsonSerializable()
 class Method {
   late String name;
-  List<TagRef>? tags;
+  List<Tag>? tags;
   String? summary;
   String? description;
   ExternalDocumentation? externalDocs;
-  late List<ContentDescriptorRef> params;
-  ContentDescriptorRef? result;
+  late List<ContentDescriptor> params;
+  ContentDescriptor? result;
   bool deprecated;
   List<Server>? servers;
-  List<ErrorRef>? errors;
-  List<LinkRef>? links;
+  List<Error>? errors;
+  List<Link>? links;
   String? paramStructure;
 
   Method({required this.name, this.tags, this.summary, this.description, this.externalDocs, required this.params, this.deprecated = false, this.servers, this.errors, this.links, this.paramStructure});

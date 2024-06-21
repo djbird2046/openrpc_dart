@@ -1,7 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'components.dart';
-import 'reference.dart';
 import 'schema.dart';
 
 part 'content_descriptor.g.dart';
@@ -12,7 +11,7 @@ class ContentDescriptor {
   String? summary;
   String? description;
   bool required;
-  late SchemaRef schema;
+  late Schema schema;
   bool deprecated;
 
   ContentDescriptor({required this.name, this.summary, this.description, this.required = false, required this.schema, this.deprecated = false});
@@ -40,43 +39,4 @@ class ContentDescriptor {
       throw FormatException("\$ref format exception: $ref");
     }
   }
-}
-
-class ContentDescriptorRef {
-  ContentDescriptor? contentDescriptor;
-  Reference? ref;
-
-  factory ContentDescriptorRef.fromJson(Map<String, dynamic> json){
-    ContentDescriptor contentDescriptor;
-    Reference? ref;
-    String? $ref = json["\$ref"];
-    if($ref != null) {
-      ref = Reference.fromJson(json);
-      contentDescriptor = ContentDescriptor._fromRef($ref);
-    } else {
-      contentDescriptor = ContentDescriptor.fromJson(json);
-    }
-
-    return ContentDescriptorRef(
-        contentDescriptor,
-        ref
-    );
-  }
-
-  ContentDescriptorRef(this.contentDescriptor, this.ref) {
-    if(contentDescriptor == null && ref == null) {
-      throw FormatException("One of parameter contentDescriptor and ref must be Non-null");
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    if(ref != null) {
-      Map<String, dynamic> refJson = ref!.toJson();
-      return refJson;
-    } else {
-      Map<String, dynamic> contentDescriptorJson = contentDescriptor!.toJson();
-      return contentDescriptorJson;
-    }
-  }
-
 }
