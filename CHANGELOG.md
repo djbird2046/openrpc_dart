@@ -1,3 +1,7 @@
+## 0.1.3
+
+- schema ref support
+
 ## 0.1.2
 
 - schema object support
