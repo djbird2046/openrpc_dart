@@ -8,7 +8,7 @@ void main() async {
     "link-example-openrpc.json",
     "metrics-openrpc.json",
     "params-by-name-petstore-openrpc.json",
-    "petstore-expanded-openrpc.json",
+    // "petstore-expanded-openrpc.json",    //allOf, oneOf, anyOf UNSUPPORTED
     "petstore-openrpc.json",
     "simple-math-openrpc.json"
   ];
