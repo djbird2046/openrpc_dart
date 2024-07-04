@@ -25,7 +25,6 @@ class Schema {
   num? maxLength;
   String? pattern;
 
-  Example? example;
   Map<String, Example>? examples;
   bool? readOnly;
   bool? writeOnly;
@@ -35,42 +34,47 @@ class Schema {
 
   Schema({required this.type, this.title, this.description, this.properties, this.items, this.required,
     this.default_, this.minimum, this.maximum, this.minLength, this.maxLength, this.pattern,
-    this.example, this.examples, this.readOnly, this.writeOnly, this.nullable,
+    this.readOnly, this.writeOnly, this.nullable,
     this.externalDocs});
 
-  factory Schema.fromJson(Map<String, dynamic> json) => _$SchemaFromJson(json);
+  factory Schema.fromJson(Map<String, dynamic> json) {
+    if(json["\$ref"] != null) {
+      return _fromRef(json["\$ref"] as String);
+    }
+    return _$SchemaFromJson(json);
+  }
 
   Map<String, dynamic> toJson() => _$SchemaToJson(this);
+
+  static Schema _fromRef(String ref) {
+    List<String> parts = ref.split("/");
+    if(parts[0]=="#"&&parts[1]=="components"&&parts[2]=="schemas") {
+      String refName = parts[3];
+      Schema? schema = SchemasSingleton.getInstance()[refName];
+      if(schema != null) {
+        return schema;
+      } else {
+        throw FormatException("#ref not found: $ref");
+      }
+    } else {
+      throw FormatException("#ref format exception: $ref");
+    }
+  }
 
 }
 
 class SchemasSingleton {
-  static Map<String, Schema>? _schemas;
-  static var cache = <String, dynamic>{};
+  static Map<String, Schema> _schemas = {};
 
   static initInstance(Map<String, dynamic> schemasJson) {
-    Map<String, Schema> schemas = {};
-    Map<String, String> refMap = {};
-    schemasJson.forEach((key, value) {
-      if(value["\$ref"] != null) {
-        refMap[key] = value as String;
-      } else {
-        schemas[key] = Schema.fromJson(value);
+    schemasJson.forEach((key,value) {
+      String schemaName = key;
+      Map<String, dynamic> schemaMap = value as Map<String, dynamic>;
+      if(schemaMap["\$ref"] == null) {
+        _schemas[schemaName] = Schema.fromJson(schemaMap);
       }
     });
-
-    refMap.forEach((key, value) {
-      List<String> parts = value.split("/");
-      if(parts[0]=="#"&&parts[1]=="components"&&parts[2]=="schemas") {
-        String refName = parts[3];
-        if(schemas[refName] != null) {
-          schemas[key] = schemas[refName]!;
-        }
-      }
-    });
-
-    _schemas = schemas;
   }
 
-  static Map<String, Schema> getInstance() => _schemas!;
+  static Map<String, Schema> getInstance() => _schemas;
 }
