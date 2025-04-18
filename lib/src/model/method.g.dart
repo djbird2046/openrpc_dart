@@ -35,17 +35,27 @@ Method _$MethodFromJson(Map<String, dynamic> json) => Method(
         ? null
         : ContentDescriptor.fromJson(json['result'] as Map<String, dynamic>);
 
-Map<String, dynamic> _$MethodToJson(Method instance) => <String, dynamic>{
-      'name': instance.name,
-      'tags': instance.tags,
-      'summary': instance.summary,
-      'description': instance.description,
-      'externalDocs': instance.externalDocs,
-      'params': instance.params,
-      'result': instance.result,
-      'deprecated': instance.deprecated,
-      'servers': instance.servers,
-      'errors': instance.errors,
-      'links': instance.links,
-      'paramStructure': instance.paramStructure,
-    };
+Map<String, dynamic> _$MethodToJson(Method instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('tags', instance.tags?.map((e) => e.toJson()).toList());
+  writeNotNull('summary', instance.summary);
+  writeNotNull('description', instance.description);
+  writeNotNull('externalDocs', instance.externalDocs?.toJson());
+  val['params'] = instance.params.map((e) => e.toJson()).toList();
+  writeNotNull('result', instance.result?.toJson());
+  val['deprecated'] = instance.deprecated;
+  writeNotNull('servers', instance.servers?.map((e) => e.toJson()).toList());
+  writeNotNull('errors', instance.errors?.map((e) => e.toJson()).toList());
+  writeNotNull('links', instance.links?.map((e) => e.toJson()).toList());
+  writeNotNull('paramStructure', instance.paramStructure);
+  return val;
+}

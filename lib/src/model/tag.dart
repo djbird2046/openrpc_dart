@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'tag.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Tag {
   late String name;
   String? summary;

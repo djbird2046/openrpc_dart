@@ -24,11 +24,21 @@ OpenRPC _$OpenRPCFromJson(Map<String, dynamic> json) => OpenRPC(
               json['externalDocs'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$OpenRPCToJson(OpenRPC instance) => <String, dynamic>{
-      'openrpc': instance.openrpc,
-      'info': instance.info,
-      'servers': instance.servers,
-      'methods': instance.methods,
-      'components': instance.components,
-      'externalDocs': instance.externalDocs,
-    };
+Map<String, dynamic> _$OpenRPCToJson(OpenRPC instance) {
+  final val = <String, dynamic>{
+    'openrpc': instance.openrpc,
+    'info': instance.info.toJson(),
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('servers', instance.servers?.map((e) => e.toJson()).toList());
+  val['methods'] = instance.methods.map((e) => e.toJson()).toList();
+  writeNotNull('components', instance.components?.toJson());
+  writeNotNull('externalDocs', instance.externalDocs?.toJson());
+  return val;
+}

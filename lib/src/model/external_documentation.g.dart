@@ -14,8 +14,16 @@ ExternalDocumentation _$ExternalDocumentationFromJson(
     );
 
 Map<String, dynamic> _$ExternalDocumentationToJson(
-        ExternalDocumentation instance) =>
-    <String, dynamic>{
-      'description': instance.description,
-      'url': instance.url,
-    };
+    ExternalDocumentation instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  val['url'] = instance.url;
+  return val;
+}

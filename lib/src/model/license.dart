@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'license.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class License {
   late String name;
   String? url;

@@ -17,11 +17,21 @@ Link _$LinkFromJson(Map<String, dynamic> json) => Link(
           : Server.fromJson(json['server'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$LinkToJson(Link instance) => <String, dynamic>{
-      'name': instance.name,
-      'description': instance.description,
-      'summary': instance.summary,
-      'method': instance.method,
-      'params': instance.params,
-      'server': instance.server,
-    };
+Map<String, dynamic> _$LinkToJson(Link instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  writeNotNull('summary', instance.summary);
+  writeNotNull('method', instance.method);
+  writeNotNull('params', instance.params);
+  writeNotNull('server', instance.server?.toJson());
+  return val;
+}

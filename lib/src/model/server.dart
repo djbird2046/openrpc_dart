@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'server.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Server{
   late String name;
   late String url;

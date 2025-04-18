@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'reference.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Reference {
   late String $ref;
 

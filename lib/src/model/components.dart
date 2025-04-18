@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'components.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Components {
   Map<String, ContentDescriptor>? contentDescriptors;
   Map<String, Schema>? schemas;

@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'info.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Info {
   late String title;
   String? description;

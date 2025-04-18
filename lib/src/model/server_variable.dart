@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'server_variable.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ServerVariable{
   @JsonKey(name: 'enum')
   List<String>? enum_;

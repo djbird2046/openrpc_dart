@@ -14,10 +14,19 @@ Example _$ExampleFromJson(Map<String, dynamic> json) => Example(
       externalValue: json['externalValue'] as String?,
     );
 
-Map<String, dynamic> _$ExampleToJson(Example instance) => <String, dynamic>{
-      'name': instance.name,
-      'summary': instance.summary,
-      'description': instance.description,
-      'value': instance.value,
-      'externalValue': instance.externalValue,
-    };
+Map<String, dynamic> _$ExampleToJson(Example instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('name', instance.name);
+  writeNotNull('summary', instance.summary);
+  writeNotNull('description', instance.description);
+  writeNotNull('value', instance.value);
+  writeNotNull('externalValue', instance.externalValue);
+  return val;
+}

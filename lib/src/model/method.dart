@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'method.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Method {
   late String name;
   List<Tag>? tags;

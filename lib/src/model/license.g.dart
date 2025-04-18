@@ -11,7 +11,17 @@ License _$LicenseFromJson(Map<String, dynamic> json) => License(
       url: json['url'] as String?,
     );
 
-Map<String, dynamic> _$LicenseToJson(License instance) => <String, dynamic>{
-      'name': instance.name,
-      'url': instance.url,
-    };
+Map<String, dynamic> _$LicenseToJson(License instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('url', instance.url);
+  return val;
+}

@@ -4,7 +4,7 @@ import 'components.dart';
 
 part 'error.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Error {
   late int code;
   late String message;

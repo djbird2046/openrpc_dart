@@ -17,11 +17,20 @@ ExamplePairing _$ExamplePairingFromJson(Map<String, dynamic> json) =>
           : Example.fromJson(json['result'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$ExamplePairingToJson(ExamplePairing instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'description': instance.description,
-      'summary': instance.summary,
-      'params': instance.params,
-      'result': instance.result,
-    };
+Map<String, dynamic> _$ExamplePairingToJson(ExamplePairing instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description);
+  writeNotNull('summary', instance.summary);
+  val['params'] = instance.params.toJson();
+  writeNotNull('result', instance.result?.toJson());
+  return val;
+}

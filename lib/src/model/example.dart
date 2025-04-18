@@ -4,7 +4,7 @@ import 'components.dart';
 
 part 'example.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Example {
   String? name;
   String? summary;

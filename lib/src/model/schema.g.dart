@@ -33,29 +33,40 @@ Schema _$SchemaFromJson(Map<String, dynamic> json) => Schema(
           : ExternalDocumentation.fromJson(
               json['externalDocs'] as Map<String, dynamic>),
     )
-      ..enum_ =
-          (json['enum'] as List<dynamic>?)?.map((e) => e as String).toList()
+      ..enum_ = json['enum'] as List<dynamic>?
       ..examples = (json['examples'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, Example.fromJson(e as Map<String, dynamic>)),
       );
 
-Map<String, dynamic> _$SchemaToJson(Schema instance) => <String, dynamic>{
-      'type': instance.type,
-      'title': instance.title,
-      'description': instance.description,
-      'properties': instance.properties,
-      'items': instance.items,
-      'enum': instance.enum_,
-      'required': instance.required,
-      'default': instance.default_,
-      'minimum': instance.minimum,
-      'maximum': instance.maximum,
-      'minLength': instance.minLength,
-      'maxLength': instance.maxLength,
-      'pattern': instance.pattern,
-      'examples': instance.examples,
-      'readOnly': instance.readOnly,
-      'writeOnly': instance.writeOnly,
-      'nullable': instance.nullable,
-      'externalDocs': instance.externalDocs,
-    };
+Map<String, dynamic> _$SchemaToJson(Schema instance) {
+  final val = <String, dynamic>{
+    'type': instance.type,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('title', instance.title);
+  writeNotNull('description', instance.description);
+  writeNotNull('properties',
+      instance.properties?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull('items', instance.items?.toJson());
+  writeNotNull('enum', instance.enum_);
+  writeNotNull('required', instance.required);
+  writeNotNull('default', instance.default_);
+  writeNotNull('minimum', instance.minimum);
+  writeNotNull('maximum', instance.maximum);
+  writeNotNull('minLength', instance.minLength);
+  writeNotNull('maxLength', instance.maxLength);
+  writeNotNull('pattern', instance.pattern);
+  writeNotNull(
+      'examples', instance.examples?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull('readOnly', instance.readOnly);
+  writeNotNull('writeOnly', instance.writeOnly);
+  writeNotNull('nullable', instance.nullable);
+  writeNotNull('externalDocs', instance.externalDocs?.toJson());
+  return val;
+}

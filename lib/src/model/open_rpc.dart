@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'open_rpc.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class OpenRPC {
   late String openrpc;
   late Info info;

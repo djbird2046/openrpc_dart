@@ -33,13 +33,26 @@ Components _$ComponentsFromJson(Map<String, dynamic> json) => Components(
       ),
     );
 
-Map<String, dynamic> _$ComponentsToJson(Components instance) =>
-    <String, dynamic>{
-      'contentDescriptors': instance.contentDescriptors,
-      'schemas': instance.schemas,
-      'examples': instance.examples,
-      'links': instance.links,
-      'errors': instance.errors,
-      'examplePairing': instance.examplePairing,
-      'tags': instance.tags,
-    };
+Map<String, dynamic> _$ComponentsToJson(Components instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('contentDescriptors',
+      instance.contentDescriptors?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull(
+      'schemas', instance.schemas?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull(
+      'examples', instance.examples?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull('links', instance.links?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull(
+      'errors', instance.errors?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull('examplePairing',
+      instance.examplePairing?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull('tags', instance.tags?.map((k, e) => MapEntry(k, e.toJson())));
+  return val;
+}

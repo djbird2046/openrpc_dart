@@ -16,9 +16,19 @@ Tag _$TagFromJson(Map<String, dynamic> json) => Tag(
               json['externalDocs'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$TagToJson(Tag instance) => <String, dynamic>{
-      'name': instance.name,
-      'summary': instance.summary,
-      'description': instance.description,
-      'externalDocs': instance.externalDocs,
-    };
+Map<String, dynamic> _$TagToJson(Tag instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('summary', instance.summary);
+  writeNotNull('description', instance.description);
+  writeNotNull('externalDocs', instance.externalDocs?.toJson());
+  return val;
+}

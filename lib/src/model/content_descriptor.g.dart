@@ -16,12 +16,21 @@ ContentDescriptor _$ContentDescriptorFromJson(Map<String, dynamic> json) =>
       deprecated: json['deprecated'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$ContentDescriptorToJson(ContentDescriptor instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'summary': instance.summary,
-      'description': instance.description,
-      'required': instance.required,
-      'schema': instance.schema,
-      'deprecated': instance.deprecated,
-    };
+Map<String, dynamic> _$ContentDescriptorToJson(ContentDescriptor instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('summary', instance.summary);
+  writeNotNull('description', instance.description);
+  val['required'] = instance.required;
+  val['schema'] = instance.schema.toJson();
+  val['deprecated'] = instance.deprecated;
+  return val;
+}

@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'example_pairing.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ExamplePairing {
   late String name;
   String? description;

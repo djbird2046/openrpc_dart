@@ -4,8 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'schema.g.dart';
 
-@JsonSerializable()
-
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class Schema {
   String type;
   String? title;
@@ -13,7 +12,7 @@ class Schema {
   Map<String, Schema>? properties;
   Schema? items;
   @JsonKey(name: "enum")
-  List<String>? enum_;
+  List<Object?>? enum_;
   List<String>? required;
 
   @JsonKey(name: "default")
@@ -39,9 +38,13 @@ class Schema {
 
   factory Schema.fromJson(Map<String, dynamic> json) {
     if(json["\$ref"] != null) {
-      return _fromRef(json["\$ref"] as String);
+      Schema schema =  _fromRef(json["\$ref"] as String);
+      schema._validateEnumConsistency();
+      return schema;
     }
-    return _$SchemaFromJson(json);
+    Schema schema =  _$SchemaFromJson(json);
+    schema._validateEnumConsistency();
+    return schema;
   }
 
   Map<String, dynamic> toJson() => _$SchemaToJson(this);
@@ -58,6 +61,35 @@ class Schema {
       }
     } else {
       throw FormatException("#ref format exception: $ref");
+    }
+  }
+
+  void _validateEnumConsistency() {
+    if (enum_ == null || enum_!.isEmpty) {
+      return;
+    }
+    for (var i = 0; i < enum_!.length; i++) {
+      var value = enum_![i];
+      if (!_isValueConsistentWithType(value)) {
+        throw FormatException('Enum value at index $i ("$value") does not match schema type "$type".');
+      }
+    }
+  }
+
+  bool _isValueConsistentWithType(Object? value) {
+    switch (type) {
+      case 'string':
+        return value is String || value == null;
+      case 'integer':
+        return value is int || value == null;
+      case 'number':
+        return (value is num && value is! bool) || value == null;
+      case 'boolean':
+        return value is bool || value == null;
+      case 'null':
+        return value == null;
+      default:
+        return true;
     }
   }
 

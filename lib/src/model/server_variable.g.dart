@@ -13,9 +13,17 @@ ServerVariable _$ServerVariableFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
     );
 
-Map<String, dynamic> _$ServerVariableToJson(ServerVariable instance) =>
-    <String, dynamic>{
-      'enum': instance.enum_,
-      'default': instance.default_,
-      'description': instance.description,
-    };
+Map<String, dynamic> _$ServerVariableToJson(ServerVariable instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('enum', instance.enum_);
+  val['default'] = instance.default_;
+  writeNotNull('description', instance.description);
+  return val;
+}

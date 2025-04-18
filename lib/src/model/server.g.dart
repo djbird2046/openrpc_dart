@@ -17,10 +17,21 @@ Server _$ServerFromJson(Map<String, dynamic> json) => Server(
       ),
     );
 
-Map<String, dynamic> _$ServerToJson(Server instance) => <String, dynamic>{
-      'name': instance.name,
-      'url': instance.url,
-      'summary': instance.summary,
-      'description': instance.description,
-      'variables': instance.variables,
-    };
+Map<String, dynamic> _$ServerToJson(Server instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+    'url': instance.url,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('summary', instance.summary);
+  writeNotNull('description', instance.description);
+  writeNotNull(
+      'variables', instance.variables?.map((k, e) => MapEntry(k, e.toJson())));
+  return val;
+}

@@ -5,7 +5,7 @@ import 'schema.dart';
 
 part 'content_descriptor.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class ContentDescriptor {
   late String name;
   String? summary;
